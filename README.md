@@ -51,7 +51,7 @@ Go to AWS Lambda → Create function
 
 Choose:
 
-Runtime: Python 3.9 or newer
+Runtime: Python 3.12.3
 
 Architecture: x86_64
 

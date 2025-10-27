@@ -27,7 +27,7 @@ def get_resource_age(creation_date):
     """Calculate resource age in days"""
     if isinstance(creation_date, str):
         creation_date = datetime.datetime.fromisoformat(creation_date.replace('Z', '+00:00'))
-    return (datetime.datetime.now(creation_date.tzinfo) - creation_date).days
+    return (datetime.datetime.now(datetime.timezone.utc) - creation_date).days
 
 def lambda_handler(event, context):
     logger.info("Starting enhanced AWS cost optimization job...")
@@ -93,7 +93,7 @@ def lambda_handler(event, context):
             logger.warning(f"Could not check/delete bucket {name}: {e}")
 
     # --- 5. Check EC2 usage (Free Tier 750 hours per month) ---
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.now(datetime.timezone.utc)
     start = now - datetime.timedelta(days=30)
     metrics = cloudwatch.get_metric_statistics(
         Namespace='AWS/EC2',
@@ -235,7 +235,7 @@ def lambda_handler(event, context):
         summary.append(f"Set 30-day retention on {updated_logs} log groups")
 
     # --- 13. Identify low-utilization instances ---
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.now(datetime.timezone.utc)
     start = now - datetime.timedelta(days=7)
     low_cpu_instances = []
     
