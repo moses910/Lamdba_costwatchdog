@@ -1,0 +1,37 @@
+name: Deploy Lambda Function
+
+on:
+  push:
+    branches: [ main ]
+    paths: 
+      - 'LamndaCostWatchdog.py'
+      - '.github/workflows/deploy-lambda.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    
+    - name: Update Lambda function
+      run: |
+        zip function.zip LamndaCostWatchdog.py
+        aws lambda update-function-code \
+          --function-name LambdaCostWatchdog \
+          --zip-file fileb://function.zip \
+          --region us-east-1
+    
+    - name: Update runtime to Python 3.12
+      run: |
+        aws lambda update-function-configuration \
+          --function-name LambdaCostWatchdog \
+          --runtime python3.12 \
+          --region us-east-1
