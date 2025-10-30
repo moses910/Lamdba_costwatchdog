@@ -1,4 +1,4 @@
-import boto3
+import boto3  # type: ignore
 import datetime
 import logging
 import os
@@ -10,7 +10,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 # Environment variables
-SNS_TOPIC_ARN = os.getenv('SNS_TOPIC_ARN', None)
+SNS_TOPIC_ARN = os.getenv('SNS_TOPIC_ARN', 'arn:aws:sns:us-east-1:15159149893:aws-daily-cleanup-report')
 SNAPSHOT_RETENTION_DAYS = int(os.getenv('SNAPSHOT_RETENTION_DAYS', '30'))
 LOW_CPU_THRESHOLD = float(os.getenv('LOW_CPU_THRESHOLD', '5.0'))
 CLEANUP_UNTAGGED_AFTER_DAYS = int(os.getenv('CLEANUP_UNTAGGED_AFTER_DAYS', '7'))
