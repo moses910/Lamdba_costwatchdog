@@ -1,0 +1,13 @@
+{
+    "Name": "cost-optimization-daily-check",
+    "Description": "Triggers cost optimization check daily",
+    "State": "ENABLED",
+    "ScheduleExpression": "rate(1 day)",
+    "Targets": [
+        {
+            "Id": "1",
+            "Arn": "arn:aws:lambda:us-east-1:123456789012:function:aws-cost-optimizer",
+            "RoleArn": "arn:aws:iam::123456789012:role/service-role/EventBridge-Invoke-Lambda"
+        }
+    ]
+}

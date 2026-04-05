@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'AWS Cost Optimizer Lambda Function'
+
+Resources:
+  CostOptimizerFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: aws-cost-optimizer
+      Runtime: python3.9
+      Handler: lambda_function.lambda_handler
+      Code:
+        ZipFile: |
+          import boto3
+          import json
+          from datetime import datetime, timedelta
+
+          def lambda_handler(event, context):
+              # Lambda function code here
+              return {'statusCode': 200, 'body': 'Cost optimization check completed'}
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 300
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  CostOptimizerPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: CostOptimizerPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - ce:GetCostAndUsage
+              - sns:Publish
+            Resource: '*'
+      Roles:
+        - !Ref LambdaExecutionRole
+
+  DailySchedule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: cost-optimization-daily
+      Description: Daily cost optimization check
+      ScheduleExpression: rate(1 day)
+      State: ENABLED
+      Targets:
+        - Id: CostOptimizerTarget
+          Arn: !GetAtt CostOptimizerFunction.Arn
+
+  PermissionForEventsToInvokeLambda:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref CostOptimizerFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt DailySchedule.Arn
