@@ -21,7 +21,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
@@ -35,19 +34,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
           path: '.'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-        - name: Cache
-  uses: actions/cache@v3.0.8
-  with:
-    # A list of files, directories, and wildcard patterns to cache and restore
-    path: 
-    # An explicit key for restoring and saving the cache
-    key: 
-    # An ordered list of keys to use for restoring stale cache if no cache hit occurred for key. Note `cache-hit` returns false in this case.
-    restore-keys: # optional
-    # The chunk size used to split up large files during upload, in bytes
-    upload-chunk-size: # optional
