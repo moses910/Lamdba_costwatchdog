@@ -22,12 +22,18 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
     
-    - name: Update Lambda function
+    - name: Package Lambda function
+      run: zip -r function.zip lambda_handler.py modules/
+
+    - name: Update Lambda function code
       run: |
-        zip -r function.zip lambda_handler.py modules/
         aws lambda update-function-code \
           --function-name LambdaCostWatchdog \
           --zip-file fileb://function.zip \
+          --region us-east-1
+
+        aws lambda wait function-updated \
+          --function-name LambdaCostWatchdog \
           --region us-east-1
     
     - name: Update runtime to Python 3.12
@@ -35,4 +41,8 @@ jobs:
         aws lambda update-function-configuration \
           --function-name LambdaCostWatchdog \
           --runtime python3.12 \
+          --region us-east-1
+
+        aws lambda wait function-updated \
+          --function-name LambdaCostWatchdog \
           --region us-east-1
