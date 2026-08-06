@@ -1,17 +1,15 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'AWS Cost Watchdog Lambda Function'
+Transform: AWS::Serverless-2016-10-31
+Description: 'AWS Cost Watchdog Lambda Function (SAM Template)'
 
 Resources:
   CostOptimizerFunction:
-    Type: AWS::Lambda::Function
+    Type: AWS::Serverless::Function
     Properties:
       FunctionName: LambdaCostWatchdog
-      Runtime: python3.12
+      CodeUri: ../
       Handler: lambda_handler.lambda_handler
-      Code:
-        S3Bucket: !Ref LambdaCodeBucket
-        S3Key: !Ref LambdaCodeKey
-      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.12
       Timeout: 300
       Environment:
         Variables:
@@ -19,81 +17,40 @@ Resources:
           SNAPSHOT_RETENTION_DAYS: '30'
           LOW_CPU_THRESHOLD: '5.0'
           CLEANUP_UNTAGGED_AFTER_DAYS: '7'
-
-  LambdaExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-
-  CostOptimizerPolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: CostOptimizerPolicy
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Action:
-              - ec2:DescribeInstances
-              - ec2:TerminateInstances
-              - ec2:DescribeVolumes
-              - ec2:DeleteVolume
-              - ec2:DescribeAddresses
-              - ec2:ReleaseAddress
-              - ec2:DescribeSnapshots
-              - ec2:DeleteSnapshot
-              - ec2:DescribeSecurityGroups
-              - ec2:DeleteSecurityGroup
-              - s3:ListAllMyBuckets
-              - s3:ListBucket
-              - s3:DeleteBucket
-              - rds:DescribeDBInstances
-              - elasticloadbalancing:DescribeLoadBalancers
-              - elasticloadbalancing:DescribeTargetGroups
-              - elasticloadbalancing:DeleteLoadBalancer
-              - cloudwatch:GetMetricStatistics
-              - logs:DescribeLogGroups
-              - logs:PutRetentionPolicy
-              - ce:GetCostAndUsage
-              - sns:Publish
-              - ssm:GetParameter
-              - ssm:PutParameter
-            Resource: '*'
-      Roles:
-        - !Ref LambdaExecutionRole
-
-  DailySchedule:
-    Type: AWS::Events::Rule
-    Properties:
-      Name: cost-optimization-daily
-      Description: Daily cost optimization check
-      ScheduleExpression: cron(0 2 * * ? *)
-      State: ENABLED
-      Targets:
-        - Id: CostOptimizerTarget
-          Arn: !GetAtt CostOptimizerFunction.Arn
-
-  PermissionForEventsToInvokeLambda:
-    Type: AWS::Lambda::Permission
-    Properties:
-      FunctionName: !Ref CostOptimizerFunction
-      Action: lambda:InvokeFunction
-      Principal: events.amazonaws.com
-      SourceArn: !GetAtt DailySchedule.Arn
-
-Parameters:
-  LambdaCodeBucket:
-    Type: String
-    Description: S3 bucket containing the Lambda deployment package zip file
-  LambdaCodeKey:
-    Type: String
-    Default: function.zip
-    Description: S3 key for the deployment package zip file
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - ec2:DescribeInstances
+                - ec2:TerminateInstances
+                - ec2:DescribeVolumes
+                - ec2:DeleteVolume
+                - ec2:DescribeAddresses
+                - ec2:ReleaseAddress
+                - ec2:DescribeSnapshots
+                - ec2:DeleteSnapshot
+                - ec2:DescribeSecurityGroups
+                - ec2:DeleteSecurityGroup
+                - s3:ListAllMyBuckets
+                - s3:ListBucket
+                - s3:DeleteBucket
+                - rds:DescribeDBInstances
+                - elasticloadbalancing:DescribeLoadBalancers
+                - elasticloadbalancing:DescribeTargetGroups
+                - elasticloadbalancing:DeleteLoadBalancer
+                - cloudwatch:GetMetricStatistics
+                - logs:DescribeLogGroups
+                - logs:PutRetentionPolicy
+                - ce:GetCostAndUsage
+                - sns:Publish
+                - ssm:GetParameter
+                - ssm:PutParameter
+              Resource: '*'
+      Events:
+        DailySchedule:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 2 * * ? *)
+            Name: cost-optimization-daily
+            Description: Daily cost optimization check
+            Enabled: true

@@ -101,8 +101,8 @@ An automated, serverless AWS cost optimisation tool that identifies and cleans u
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/moses910/Lamdba_costwatchdog.git
-cd Lamdba_costwatchdog
+git clone https://github.com/moses910/Lambda_costwatchdog.git
+cd Lambda_costwatchdog
 ```
 
 ### 2️⃣ Deploy Using PowerShell (Recommended for Windows)
@@ -368,8 +368,8 @@ Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines
 
 ```bash
 # Clone the repo
-git clone https://github.com/moses910/Lamdba_costwatchdog.git
-cd Lamdba_costwatchdog
+git clone https://github.com/moses910/Lambda_costwatchdog.git
+cd Lambda_costwatchdog
 
 # Install dependencies
 pip install -r requirements.txt
@@ -419,8 +419,8 @@ Cloud Engineer & AI Developer
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/moses910/Lamdba_costwatchdog/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/moses910/Lamdba_costwatchdog/discussions)
+- **Issues**: [GitHub Issues](https://github.com/moses910/Lambda_costwatchdog/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/moses910/Lambda_costwatchdog/discussions)
 - **Questions**: Open an issue with the `question` label
 
 ---
