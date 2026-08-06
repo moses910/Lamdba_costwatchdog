@@ -5,8 +5,10 @@
             "Effect": "Allow",
             "Action": [
                 "ce:GetCostAndUsage",
-                "ce:GetUsageAndCosts",
-                "sns:Publish"
+                "ce:GetDimensionValues",
+                "sns:Publish",
+                "ssm:GetParameter",
+                "ssm:PutParameter"
             ],
             "Resource": "*"
         }

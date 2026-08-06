@@ -7,7 +7,7 @@ param(
 Write-Host "Deploying Lambda function: $FunctionName" -ForegroundColor Green
 
 # Create deployment package
-Compress-Archive -Path "LamndaCostWatchdog.py" -DestinationPath "function.zip" -Force
+Compress-Archive -Path "lambda_handler.py", "modules" -DestinationPath "function.zip" -Force
 
 # Update Lambda function code
 aws lambda update-function-code `

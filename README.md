@@ -119,14 +119,14 @@ cd Lamdba_costwatchdog
 **Create Lambda Function:**
 ```bash
 # Package the code
-zip function.zip lambda_function.py
+zip -r function.zip lambda_handler.py modules/
 
 # Create function
 aws lambda create-function \
-  --function-name aws-cost-optimizer \
-  --runtime python3.9 \
+  --function-name LambdaCostWatchdog \
+  --runtime python3.12 \
   --role arn:aws:iam::YOUR_ACCOUNT_ID:role/lambda-execution-role \
-  --handler lambda_function.lambda_handler \
+  --handler lambda_handler.lambda_handler \
   --zip-file fileb://function.zip \
   --timeout 300 \
   --memory-size 256 \
@@ -163,6 +163,7 @@ aws lambda add-permission \
 | `SNAPSHOT_RETENTION_DAYS` | `30` | Days to keep EBS snapshots before deletion |
 | `LOW_CPU_THRESHOLD` | `5.0` | CPU % threshold for low-utilization alerts |
 | `CLEANUP_UNTAGGED_AFTER_DAYS` | `7` | Days before flagging untagged resources |
+| `COST_METRIC` | `BlendedCost` | Cost metric type (`BlendedCost`, `UnblendedCost`, `AmortizedCost`) |
 
 ### Setting Environment Variables
 

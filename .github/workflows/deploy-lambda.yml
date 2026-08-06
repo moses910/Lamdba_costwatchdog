@@ -4,7 +4,8 @@ on:
   push:
     branches: [ main ]
     paths: 
-      - 'LamndaCostWatchdog.py'
+      - 'lambda_handler.py'
+      - 'modules/**'
       - '.github/workflows/deploy-lambda.yml'
 
 jobs:
@@ -23,7 +24,7 @@ jobs:
     
     - name: Update Lambda function
       run: |
-        zip function.zip LamndaCostWatchdog.py
+        zip -r function.zip lambda_handler.py modules/
         aws lambda update-function-code \
           --function-name LambdaCostWatchdog \
           --zip-file fileb://function.zip \

@@ -4,13 +4,26 @@
     {
       "Effect": "Allow",
       "Action": [
-        "ec2:*",
-        "s3:*",
-        "rds:*",
-        "elasticloadbalancing:*",
-        "cloudwatch:*",
-        "lambda:*",
-        "sns:*"
+        "ec2:DescribeInstances",
+        "ec2:TerminateInstances",
+        "ec2:DescribeVolumes",
+        "ec2:DeleteVolume",
+        "ec2:DescribeAddresses",
+        "ec2:ReleaseAddress",
+        "ec2:DescribeSnapshots",
+        "ec2:DeleteSnapshot",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DeleteSecurityGroup",
+        "s3:ListAllMyBuckets",
+        "s3:ListBucket",
+        "s3:DeleteBucket",
+        "rds:DescribeDBInstances",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "elasticloadbalancing:DescribeTargetGroups",
+        "elasticloadbalancing:DeleteLoadBalancer",
+        "cloudwatch:GetMetricStatistics",
+        "lambda:ListFunctions",
+        "sns:Publish"
       ],
       "Resource": "*"
     },
@@ -33,6 +46,14 @@
         "ce:GetDimensionValues"
       ],
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetParameter",
+        "ssm:PutParameter"
+      ],
+      "Resource": "arn:aws:ssm:*:*:parameter/lambda/cost-analysis-last-run"
     }
   ]
 }
