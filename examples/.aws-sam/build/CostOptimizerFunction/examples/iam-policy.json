@@ -1,0 +1,16 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ce:GetCostAndUsage",
+                "ce:GetDimensionValues",
+                "sns:Publish",
+                "ssm:GetParameter",
+                "ssm:PutParameter"
+            ],
+            "Resource": "*"
+        }
+    ]
+}

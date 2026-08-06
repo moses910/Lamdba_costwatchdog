@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  SNS topic and email subscription for AWS Daily Cleanup Report.
+  (Lambda already has SNS permissions.)
+
+Parameters:
+  EmailAddress:
+    Type: String
+    Description: Email address to receive the daily cleanup report.
+
+Resources:
+  CleanupReportTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: aws-daily-cleanup-report
+      DisplayName: AWS Daily Cleanup Report Notifications
+
+  CleanupReportSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: email
+      Endpoint: !Ref EmailAddress
+      TopicArn: !Ref CleanupReportTopic
+
+Outputs:
+  SnsTopicArn:
+    Description: ARN of the SNS topic to use in Lambda environment variable.
+    Value: !Ref CleanupReportTopic

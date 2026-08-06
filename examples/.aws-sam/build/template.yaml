@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS Cost Watchdog Lambda Function (SAM Template)
+Resources:
+  CostOptimizerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: LambdaCostWatchdog
+      CodeUri: CostOptimizerFunction
+      Handler: lambda_handler.lambda_handler
+      Runtime: python3.12
+      Timeout: 300
+      Environment:
+        Variables:
+          DRY_RUN: 'true'
+          SNAPSHOT_RETENTION_DAYS: '30'
+          LOW_CPU_THRESHOLD: '5.0'
+          CLEANUP_UNTAGGED_AFTER_DAYS: '7'
+      Policies:
+      - Statement:
+        - Effect: Allow
+          Action:
+          - ec2:DescribeInstances
+          - ec2:TerminateInstances
+          - ec2:DescribeVolumes
+          - ec2:DeleteVolume
+          - ec2:DescribeAddresses
+          - ec2:ReleaseAddress
+          - ec2:DescribeSnapshots
+          - ec2:DeleteSnapshot
+          - ec2:DescribeSecurityGroups
+          - ec2:DeleteSecurityGroup
+          - s3:ListAllMyBuckets
+          - s3:ListBucket
+          - s3:DeleteBucket
+          - rds:DescribeDBInstances
+          - elasticloadbalancing:DescribeLoadBalancers
+          - elasticloadbalancing:DescribeTargetGroups
+          - elasticloadbalancing:DeleteLoadBalancer
+          - cloudwatch:GetMetricStatistics
+          - logs:DescribeLogGroups
+          - logs:PutRetentionPolicy
+          - ce:GetCostAndUsage
+          - sns:Publish
+          - ssm:GetParameter
+          - ssm:PutParameter
+          Resource: '*'
+      Events:
+        DailySchedule:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 2 * * ? *)
+            Name: cost-optimization-daily
+            Description: Daily cost optimization check
+            Enabled: true
+    Metadata:
+      SamResourceId: CostOptimizerFunction

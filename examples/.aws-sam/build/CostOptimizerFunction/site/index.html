@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Lambda Cost Watchdog is a serverless AWS cost optimisation tool for cleanup, free-tier monitoring, and cost reporting.">
+  <title>Lambda Cost Watchdog</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    body {
+      margin: 0;
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(34, 197, 94, 0.12));
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      border-radius: 24px;
+      padding: 3rem;
+      box-shadow: 0 24px 80px rgba(15, 23, 42, 0.45);
+    }
+
+    h1 {
+      margin: 0 0 1rem;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 1;
+    }
+
+    .tagline {
+      max-width: 720px;
+      margin: 0 0 2rem;
+      color: #cbd5e1;
+      font-size: 1.2rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    a.button {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 0.8rem 1.2rem;
+      background: #38bdf8;
+      color: #082f49;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    a.button.secondary {
+      background: transparent;
+      color: #e2e8f0;
+      border: 1px solid rgba(226, 232, 240, 0.4);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 18px;
+      padding: 1.25rem;
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .card h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: #cbd5e1;
+    }
+
+    .warning {
+      margin-top: 2rem;
+      padding: 1rem 1.25rem;
+      border-left: 4px solid #fbbf24;
+      border-radius: 12px;
+      background: rgba(251, 191, 36, 0.12);
+      color: #fde68a;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <h1 id="page-title">Lambda Cost Watchdog</h1>
+      <p class="tagline">
+        A serverless AWS cost optimisation tool that identifies unused resources,
+        monitors free-tier usage, and provides monthly cost analysis reports.
+      </p>
+      <div class="actions" aria-label="Project links">
+        <a class="button" href="https://github.com/moses910/Lambda_costwatchdog">View the GitHub repository</a>
+        <a class="button secondary" href="https://github.com/moses910/Lambda_costwatchdog#readme">Read setup instructions</a>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <h2>Automated cleanup</h2>
+          <p>Finds stopped EC2 instances, unattached EBS volumes, unused Elastic IPs, and other stale resources.</p>
+        </article>
+        <article class="card">
+          <h2>Free-tier monitoring</h2>
+          <p>Tracks EC2, S3, Lambda, and RDS usage against common AWS free-tier limits.</p>
+        </article>
+        <article class="card">
+          <h2>Cost reporting</h2>
+          <p>Generates cost summaries and estimated monthly savings for review.</p>
+        </article>
+      </div>
+      <p class="warning">
+        Safety first: deploy with <strong>DRY_RUN=true</strong> and review reports before enabling destructive cleanup actions.
+      </p>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+    "Name": "cost-optimization-daily-check",
+    "Description": "Triggers cost optimization check daily",
+    "State": "ENABLED",
+    "ScheduleExpression": "cron(0 2 * * ? *)",
+    "Targets": [
+        {
+            "Id": "1",
+            "Arn": "arn:aws:lambda:us-east-1:123456789012:function:LambdaCostWatchdog"
+        }
+    ]
+}
